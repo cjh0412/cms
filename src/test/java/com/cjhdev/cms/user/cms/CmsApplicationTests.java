@@ -1,4 +1,4 @@
-package com.cjhdev.cms;
+package com.cjhdev.cms.user.cms;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
