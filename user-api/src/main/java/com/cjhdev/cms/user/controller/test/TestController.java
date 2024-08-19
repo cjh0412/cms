@@ -1,6 +1,6 @@
 package com.cjhdev.cms.user.controller.test;
 
-import com.cjhdev.cms.user.client.service.test.EmailSendService;
+import com.cjhdev.cms.user.service.test.EmailSendService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

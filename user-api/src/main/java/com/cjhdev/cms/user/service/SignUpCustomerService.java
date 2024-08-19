@@ -1,4 +1,4 @@
-package com.cjhdev.cms.user.client.service;
+package com.cjhdev.cms.user.service;
 
 import com.cjhdev.cms.user.domain.SignUpForm;
 import com.cjhdev.cms.user.domain.model.Customer;

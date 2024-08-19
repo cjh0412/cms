@@ -1,4 +1,4 @@
-package com.cjhdev.cms.user.client.service.test;
+package com.cjhdev.cms.user.service.test;
 
 import com.cjhdev.cms.user.client.MailgunClient;
 import com.cjhdev.cms.user.client.mailgun.SendMailForm;

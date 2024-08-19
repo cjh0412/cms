@@ -2,7 +2,7 @@ package com.cjhdev.cms.user.application;
 
 import com.cjhdev.cms.user.client.MailgunClient;
 import com.cjhdev.cms.user.client.mailgun.SendMailForm;
-import com.cjhdev.cms.user.client.service.SignUpCustomerService;
+import com.cjhdev.cms.user.service.SignUpCustomerService;
 import com.cjhdev.cms.user.domain.SignUpForm;
 import com.cjhdev.cms.user.domain.model.Customer;
 import com.cjhdev.cms.user.exception.CustomerException;

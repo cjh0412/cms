@@ -20,26 +20,27 @@ configurations {
 repositories {
     mavenCentral()
 }
-
 // build.gradle에서 사용할 전역 변수 선언
 ext{
     set('springCloudVersion', "2023.0.2")
 }
 
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.3' // mailgun사용을 위한 의존성 추가
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
-    implementation 'org.springframework.data:spring-data-envers' // 엔티티 변경 이력 관리
-    compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'com.mysql:mysql-connector-j'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    runtimeOnly 'com.mysql:mysql-connector-j'
-}
+    dependencies {
+        implementation project(path:':cms-domain', configuration: 'default')
+
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.3' // mailgun사용을 위한 의존성 추가
+        implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
+        implementation 'org.springframework.data:spring-data-envers' // 엔티티 변경 이력 관리
+        compileOnly 'org.projectlombok:lombok'
+        runtimeOnly 'com.h2database:h2'
+        runtimeOnly 'com.mysql:mysql-connector-j'
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        runtimeOnly 'com.mysql:mysql-connector-j'
+    }
 
 //버전 관리
 dependencyManagement {

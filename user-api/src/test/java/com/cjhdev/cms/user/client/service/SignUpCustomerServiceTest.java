@@ -2,15 +2,13 @@ package com.cjhdev.cms.user.client.service;
 
 import com.cjhdev.cms.user.domain.SignUpForm;
 import com.cjhdev.cms.user.domain.model.Customer;
+import com.cjhdev.cms.user.service.SignUpCustomerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
