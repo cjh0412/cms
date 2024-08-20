@@ -10,11 +10,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @ServletComponentScan
-@RequiredArgsConstructor
-@EnableJpaAuditing
-@SpringBootApplication
 @EnableFeignClients
-@EnableJpaRepositories(repositoryBaseClass = EnversRevisionRepositoryFactoryBean.class) // redis사용설정
+@EnableJpaAuditing
+@EnableJpaRepositories(repositoryFactoryBeanClass = EnversRevisionRepositoryFactoryBean.class) // redis사용설정
+@SpringBootApplication
 public class OrderApplication {
 
 	public static void main(String[] args) {

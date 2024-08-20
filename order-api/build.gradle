@@ -25,11 +25,9 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
     implementation 'org.springframework.data:spring-data-envers' // 엔티티 변경 이력 관리
 
-    //redis
+    // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    testImplementation('it.ozimov:embedded-redis:0.7.3'){
-        exclude group: "org.slf4j", module:"slf4j-simple"
-    }
+    testImplementation ('it.ozimov:embedded-redis:0.7.3') { exclude group: "org.slf4j", module: "slf4j-simple" }
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
@@ -37,8 +35,8 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
 
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 //버전 관리
