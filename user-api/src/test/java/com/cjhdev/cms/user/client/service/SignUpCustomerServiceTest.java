@@ -2,7 +2,7 @@ package com.cjhdev.cms.user.client.service;
 
 import com.cjhdev.cms.user.domain.SignUpForm;
 import com.cjhdev.cms.user.domain.model.Customer;
-import com.cjhdev.cms.user.service.SignUpCustomerService;
+import com.cjhdev.cms.user.service.customer.SignUpCustomerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

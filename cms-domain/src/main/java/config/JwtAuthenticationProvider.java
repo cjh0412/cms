@@ -13,7 +13,7 @@ import java.util.Objects;
 
 // 로그인 토큰을 만들기 위해 jsonWebToken(JWT) 을 이용
 
-public class JwtAuthenticationProvider {
+public class  JwtAuthenticationProvider {
     private String secretKey = "secretKey";
 
     // 토큰 사용 기간

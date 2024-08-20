@@ -1,6 +1,6 @@
 package com.cjhdev.cms.user.config.filter;
 
-import com.cjhdev.cms.user.service.CustomerService;
+import com.cjhdev.cms.user.service.customer.CustomerService;
 import config.JwtAuthenticationProvider;
 import domain.common.UserVo;
 import jakarta.servlet.*;

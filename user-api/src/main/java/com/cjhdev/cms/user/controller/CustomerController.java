@@ -2,10 +2,9 @@ package com.cjhdev.cms.user.controller;
 
 import com.cjhdev.cms.user.domain.customer.CustomerDto;
 import com.cjhdev.cms.user.domain.model.Customer;
-import com.cjhdev.cms.user.domain.repository.CustomerRepository;
 import com.cjhdev.cms.user.exception.CustomerException;
 import com.cjhdev.cms.user.exception.ErrorCode;
-import com.cjhdev.cms.user.service.CustomerService;
+import com.cjhdev.cms.user.service.customer.CustomerService;
 import config.JwtAuthenticationProvider;
 import domain.common.UserVo;
 import lombok.RequiredArgsConstructor;
