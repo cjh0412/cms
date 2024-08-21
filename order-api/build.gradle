@@ -25,6 +25,19 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
     implementation 'org.springframework.data:spring-data-envers' // 엔티티 변경 이력 관리
 
+    //QueryDsl
+//    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+//    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
+//
+
+//    annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+//    annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
     // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     testImplementation ('it.ozimov:embedded-redis:0.7.3') { exclude group: "org.slf4j", module: "slf4j-simple" }
@@ -49,3 +62,4 @@ dependencyManagement {
 test {
     useJUnitPlatform()
 }
+
