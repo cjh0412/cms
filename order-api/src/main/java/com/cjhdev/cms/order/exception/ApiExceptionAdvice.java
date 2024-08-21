@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class ApiExceptionAdvice {
+    //@ExceptionHandler 주의사항
+    // 선언되어있는 exceptionClass는  문제가 되지 않지만,
+    // 그외 HttpHeaders, HttpStatus 등 같이 선언하여 사용하실 때에는 오류가 발생하므로 작성시 주의!
 
     @ExceptionHandler({CustomException.class})
     public ResponseEntity<CustomException.CustomExceptionResponse> handleCustomException(final CustomException e) {
