@@ -24,7 +24,7 @@ Use : Spring, Jpa, Mysql, Redis, Docker, AWS
 
 ## 주문
  ##판매자
- - [ ] 상품등록, 수정
+ - [x] 상품등록, 수정
  - [ ] 상품 삭제
 
  ##구매자
