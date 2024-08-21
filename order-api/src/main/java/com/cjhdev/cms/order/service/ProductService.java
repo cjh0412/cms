@@ -24,14 +24,14 @@ public class ProductService {
 
     @Transactional
     public Product updateProduct(Long sellerId, UpdateProductForm form){
-        Product p = productRepository.findBySellerIdAndId(sellerId, form.getId())
+        Product product = productRepository.findBySellerIdAndId(sellerId, form.getId())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
 
-        p.setName(form.getName());
-        p.setDescription(form.getDescription());
+        product.setName(form.getName());
+        product.setDescription(form.getDescription());
 
         for (UpdateProductItemForm itemForm : form.getItems()){
-            ProductItem item = p.getProductItems().stream()
+            ProductItem item = product.getProductItems().stream()
                     .filter(piForm -> piForm.getId().equals(itemForm.getId()))
                     .findFirst()
                     .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT_ITEM));
@@ -41,8 +41,16 @@ public class ProductService {
             item.setCount(itemForm.getCount());
         }
 
-        return p;
+        return product;
 
+    }
+
+    @Transactional
+    public void deleteProduct(Long sellerId, Long productId){
+        Product product = productRepository.findBySellerIdAndId(sellerId, productId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
+
+        productRepository.delete(product);
     }
 
 }

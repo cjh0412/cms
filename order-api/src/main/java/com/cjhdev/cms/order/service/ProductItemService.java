@@ -45,4 +45,13 @@ public class ProductItemService {
         productItem.setCount(form.getCount());
         return productItem;
     }
+
+    @Transactional
+    public void deleteProductItem(Long sellerId, Long productItemId){
+        ProductItem productItem = productItemRepository.findById(productItemId)
+                .filter(piForm -> piForm.getSellerId().equals(sellerId))
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT_ITEM));
+
+        productItemRepository.delete(productItem);
+    }
 }
