@@ -1,4 +1,5 @@
 rootProject.name = 'cms'
+//모듈 추가
 include 'user-api'
 include 'cms-domain'
 include 'order-api'

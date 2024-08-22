@@ -18,7 +18,7 @@ public class EmailSendService {
     public String sendEmail(){
         SendMailForm form = SendMailForm.builder()
                 .from(mailgunMail)
-                .to("example@example.com")
+                .to("example@example.com") // 테스트 email의 경우 메일건에 설정 필요
                 .subject("test")
                 .text("my text")
                 .build();
