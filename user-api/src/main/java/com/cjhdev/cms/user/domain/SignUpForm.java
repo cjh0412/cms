@@ -11,6 +11,8 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+// 무분별한 setter 사용 방지, ToString을 통한 순환 참조 문제 방지를 위해 사용x
+//@Data
 public class SignUpForm {
     private String email;
     private String name;

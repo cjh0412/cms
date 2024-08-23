@@ -16,7 +16,8 @@ import java.util.Locale;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@AuditOverride(forClass = BaseEntity.class) // 생성, 수정 일자 자동 변경
+// 생성, 수정 일자 자동 변경
+@AuditOverride(forClass = BaseEntity.class)
 public class Customer extends BaseEntity {
     @Id
     @Column(name="id", nullable = false)

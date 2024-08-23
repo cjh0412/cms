@@ -19,6 +19,7 @@ public class SignUpCustomerService {
 
     private final CustomerRepository customerRepository;
 
+    // 회원가입
     public Customer signUp(SignUpForm form){
         return customerRepository.save(Customer.from(form));
     };
