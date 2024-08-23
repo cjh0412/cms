@@ -24,11 +24,13 @@ public class SignUpCustomerService {
         return customerRepository.save(Customer.from(form));
     };
 
+    // 이메일 존재여부
     public boolean isEmailExist(String email){
         return customerRepository.findByEmail(email.toLowerCase(Locale.ROOT)).
                 isPresent();
     }
 
+    // 회원정보와 코드값 유효 여부 체크
     @Transactional
     public void verifyEmail(String email, String code){
         Customer customer = customerRepository.findByEmail(email)
@@ -45,7 +47,7 @@ public class SignUpCustomerService {
         customer.setVerified(true);
     }
 
-    // 인증키를 전송한 회원정보(이메일)
+    // 회원정보(이메일)확인 후 인증키 만료일 세팅
     @Transactional
     public LocalDateTime ChangeCustomerValidateEmail(Long customerId, String verificationCode){
         Optional<Customer> customerOptional = customerRepository.findById(customerId);

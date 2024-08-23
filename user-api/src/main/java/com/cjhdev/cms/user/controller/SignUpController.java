@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/signup")
 @RequiredArgsConstructor
+@RequestMapping("/signup")
 public class SignUpController {
 
     private final SignUpApplication signUpApplication;

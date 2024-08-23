@@ -1,3 +1,5 @@
+// 각기 다른 역할을 하는 서비스를 관리하기위해 별도의 application 생성
+// 회원가입시 할일 1. 회원계정 만들기 2.메일보내기
 package com.cjhdev.cms.user.application;
 
 import com.cjhdev.cms.user.client.MailgunClient;
@@ -24,22 +26,41 @@ public class SignUpApplication {
     @Value("${mailgun.mail}")
     private String mailgunMail;
 
-    //각기 다른 역할을 하는 서비스를 관리
-    //회원가입시 할일 1. 회원계정 만들기 2.메일보내기,
     private final MailgunClient mailgunClient;
     private final SignUpCustomerService signUpCustomerService;
     private final SellerService sellerService;
 
+    // 이메일인증시 key 값 생성
+    private String getRandomCode() {
+        return RandomStringUtils.random(19, true, true); // 문자와 숫자 둘다 사용
+    }
+
+    // 전송 내용
+    private String getVerificationEmailBody(String email, String name, String type, String code) {
+        StringBuilder builder = new StringBuilder();
+        return builder.append("Hello")
+                .append(name + "님")
+                .append("하단의 링크를 클릭해주세요")
+                .append("http://localhost:8081/signup/"+type+"/verify?email=")
+                .append(email)
+                .append("&code=")
+                .append(code).toString();
+
+    }
+
+    // customer
     public void customerVerify(String email, String code){
         signUpCustomerService.verifyEmail(email, code);
     }
 
     public String customerSignUp(SignUpForm form) {
         // 메일 정보가 존재할 경우
+        // ture : 회원 정보가 있는 이메일
         if (signUpCustomerService.isEmailExist(form.getEmail())) {
             //exception
             throw new CustomerException(ErrorCode.ALREADY_REGISTER_USER);
         } else {
+            // false : 회원 정보가 없는 이메일(회원가입)
             Customer customer = signUpCustomerService.signUp(form);
             LocalDateTime now = LocalDateTime.now();
             String code = getRandomCode();
@@ -51,10 +72,12 @@ public class SignUpApplication {
                     .build();
             mailgunClient.sendEmail(sendMailForm);
             signUpCustomerService.ChangeCustomerValidateEmail(customer.getId(), code);
+            return "회원가입에 성공하셨습니다.";
         }
-        return "회원가입에 성공하셨습니다.";
     }
-
+    
+    
+    // 셀러
     public void sellerVerify(String email, String code){
         sellerService.verifyEmail(email, code);
     }
@@ -80,23 +103,7 @@ public class SignUpApplication {
         return "회원가입에 성공하셨습니다.";
     }
 
-    // 이메일인증시 key 값 설정
-    private String getRandomCode() {
-        return RandomStringUtils.random(19, true, true); // 문자와 숫자 둘다 사용
-    }
 
-    // 전송 내용
-    private String getVerificationEmailBody(String email, String name, String type, String code) {
-        StringBuilder builder = new StringBuilder();
-        return builder.append("Hello")
-                .append(name + "님")
-                .append("'이메일 인증'을 클릭해주세요")
-                .append("http://localhost:8081/signup/"+type+"/verify?email=")
-                .append(email)
-                .append("&code=")
-                .append(code).toString();
-
-    }
 
 
 }
