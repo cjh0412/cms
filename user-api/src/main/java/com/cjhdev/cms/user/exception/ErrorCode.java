@@ -18,7 +18,6 @@ public enum ErrorCode {
 
     //잔액 오류
     , NOT_ENOUGH_BALANCE(HttpStatus.BAD_REQUEST, "잔액이 부족합니다.")
-
     ;
 
 

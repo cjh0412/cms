@@ -1,6 +1,8 @@
 package com.cjhdev.cms.order.controller;
 
+import com.cjhdev.cms.order.OrderApplication;
 import com.cjhdev.cms.order.application.CartApplication;
+import com.cjhdev.cms.order.application.OrderAPIApplication;
 import com.cjhdev.cms.order.domain.product.AddProductCartFrom;
 import com.cjhdev.cms.order.domain.redis.Cart;
 import config.JwtAuthenticationProvider;
@@ -16,6 +18,7 @@ public class CustomerCartController {
 
     private final CartApplication cartApplication;
     private final JwtAuthenticationProvider provider;
+    private final OrderAPIApplication orderApplication;
 
     @PostMapping
     public ResponseEntity<Cart> addCart(
@@ -38,5 +41,15 @@ public class CustomerCartController {
     ){
         return ResponseEntity.ok(cartApplication.updateCart(provider.getUserVo(token).getId() , cart));
     }
+
+    @PostMapping("/order")
+    public ResponseEntity<Cart> order(
+            @RequestHeader(name="X-AUTH-TOKEN") String token,
+            @RequestBody Cart cart
+    ){
+        orderApplication.cartOrder(token, cart);
+        return ResponseEntity.ok().build();
+    }
+
 
 }
