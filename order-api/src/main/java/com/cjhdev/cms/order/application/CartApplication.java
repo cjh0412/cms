@@ -49,6 +49,13 @@ public class CartApplication {
         cartService.putCart(customerId, null);
     }
 
+    public Cart updateCart(Long customerId, Cart cart){
+        // 실질적으로 변하는 데이터
+        // 상품의 삭제, 수량의 변경
+        cartService.putCart(customerId, cart);
+        return getCart(customerId);
+    }
+
 
     
     private Cart refreshCart(Cart cart){
