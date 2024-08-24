@@ -1,6 +1,6 @@
 package com.cjhdev.cms.order.domain.redis;
 
-import com.cjhdev.cms.order.domain.product.AddProductCardFrom;
+import com.cjhdev.cms.order.domain.product.AddProductCartFrom;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @RedisHash("cart")
 public class Cart {
 
@@ -21,6 +22,10 @@ public class Cart {
     private Long customerId;
     private List<Product> products = new ArrayList<>();
     private List<String> messages = new ArrayList<>();
+
+    public Cart(Long customerId){
+        this.customerId = customerId;
+    }
 
     public void addMessage(String message){
         messages.add(message);
@@ -36,9 +41,10 @@ public class Cart {
         private Long sellerId;
         private String name;
         private String description;
+
         private List<ProductItem> items = new ArrayList<>();
 
-        public static Product from(AddProductCardFrom form){
+        public static Product from(AddProductCartFrom form){
             return Product.builder()
                     .id(form.getId())
                     .sellerId(form.getSellerId())
@@ -59,7 +65,7 @@ public class Cart {
         private Integer price;
         private Integer count;
 
-        public static ProductItem from(AddProductCardFrom.ProductItem form){
+        public static ProductItem from(AddProductCartFrom.ProductItem form){
             return ProductItem.builder()
                     .id(form.getId())
                     .name(form.getName())
@@ -68,4 +74,5 @@ public class Cart {
                     .build();
         }
     }
+
 }

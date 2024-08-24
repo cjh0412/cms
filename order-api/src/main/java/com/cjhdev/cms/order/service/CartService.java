@@ -1,7 +1,7 @@
 package com.cjhdev.cms.order.service;
 
 import com.cjhdev.cms.order.client.RedisClient;
-import com.cjhdev.cms.order.domain.product.AddProductCardFrom;
+import com.cjhdev.cms.order.domain.product.AddProductCartFrom;
 import com.cjhdev.cms.order.domain.redis.Cart;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +19,17 @@ public class CartService {
     private final RedisClient redisClient;
 
     public Cart getCart(Long customerId){
-        return redisClient.get(customerId, Cart.class);
+        Cart cart = redisClient.get(customerId, Cart.class);
+        return cart != null? cart : new Cart();
+
     }
 
-    public Cart addCart(Long custmerId, AddProductCardFrom form){
+    public Cart putCart(Long customerId, Cart cart){
+        redisClient.put(customerId, cart);
+        return cart;
+    }
+
+    public Cart addCart(Long custmerId, AddProductCartFrom form){
         Cart cart = redisClient.get(custmerId, Cart.class);
         if (cart == null) {
             cart = new Cart();

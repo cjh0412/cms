@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddProductCardFrom {
+public class AddProductCartFrom {
     private Long id;
     private Long productId;
     private Long sellerId;

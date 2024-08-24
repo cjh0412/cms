@@ -1,7 +1,7 @@
 package com.cjhdev.cms.order.controller;
 
 import com.cjhdev.cms.order.application.CartApplication;
-import com.cjhdev.cms.order.domain.product.AddProductCardFrom;
+import com.cjhdev.cms.order.domain.product.AddProductCartFrom;
 import com.cjhdev.cms.order.domain.redis.Cart;
 import config.JwtAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +20,15 @@ public class CustomerCartController {
     @PostMapping
     public ResponseEntity<Cart> addCart(
             @RequestHeader(name="X-AUTH-TOKEN") String token,
-            @RequestBody AddProductCardFrom form){
+            @RequestBody AddProductCartFrom form){
         return ResponseEntity.ok(cartApplication.addCart(provider.getUserVo(token).getId(), form));
     }
 
+
+    @GetMapping
+    public ResponseEntity<Cart> showCart(
+            @RequestHeader(name="X-AUTH-TOKEN") String token){
+            return ResponseEntity.ok(cartApplication.getCart(provider.getUserVo(token).getId()));
+        }
 
 }
