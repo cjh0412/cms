@@ -15,9 +15,13 @@ public class Aes256Util {
 
     public static String encrypt(String text){
         try{
+            //Cipher :  다양한 암호화 알고리즘을 사용하여 데이터 암호화 및 복호화 기능 제공
             Cipher cipher = Cipher.getInstance(alg);
+            // 암호화 작업을 위한 키
             SecretKeySpec key = new SecretKeySpec(KEY.getBytes(), "AES");
+            // 암호화 블록 연결(CBC)를 초기치(IV)를 만들기 위해 사용
             IvParameterSpec iv = new IvParameterSpec(IV.getBytes(StandardCharsets.UTF_8));
+            //CBC 초기화 (작동 모드 & 키 & IV)
             cipher.init(Cipher.ENCRYPT_MODE, key, iv);
             byte[] encrypted = cipher.doFinal(text.getBytes(StandardCharsets.UTF_8));
             return Base64.encodeBase64String(encrypted);
