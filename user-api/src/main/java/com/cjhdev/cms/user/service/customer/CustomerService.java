@@ -19,6 +19,7 @@ public class CustomerService {
     }
 
     public Optional<Customer> findValidCustomer(String email, String password) {
+        // findByEmail에서 가져온 password와 입력값 동일 여부 및 verified가 true인지 체크
         return customerRepository.findByEmail(email).stream().filter(
                 customer -> customer.getPassword().equals(password) && customer.isVerified())
                 .findFirst();

@@ -26,12 +26,13 @@ ext{
 }
 
     dependencies {
-        implementation project(path:':cms-domain', configuration: 'default')
-
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation 'org.springframework.boot:spring-boot-starter-web'
         compileOnly 'org.projectlombok:lombok'
         runtimeOnly 'com.mysql:mysql-connector-j'
+
+        // jwt 토큰 사용을 위한 모듈 추가(cms-domain)
+        implementation project(path:':cms-domain', configuration: 'default')
 
         // 엔티티 변경 이력 관리
         implementation 'org.springframework.data:spring-data-envers'

@@ -91,13 +91,12 @@ class SignUpCustomerServiceTest {
                 .password("1")
                 .phone("01012341234")
                 .verificationCode(code)
-                .verified(false)
+                .verified(true)
                 .verifyExpiredAt(LocalDateTime.now().plusDays(1))
                 .build();
-        //when
         customerRepository.save(customer);
+        //when
         service.verifyEmail(customer.getEmail(), customer.getVerificationCode());
-        customer.setVerified(true);
 
         // then
         assertTrue("trueEmail@gmail.com".equals(customer.getEmail()));
