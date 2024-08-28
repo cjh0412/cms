@@ -13,9 +13,9 @@ import java.util.Locale;
 @Entity
 @Getter
 @Builder
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+//@Setter
 // 생성, 수정 일자 자동 변경
 @AuditOverride(forClass = BaseEntity.class)
 public class Customer extends BaseEntity {
@@ -50,6 +50,28 @@ public class Customer extends BaseEntity {
                 .phone(form.getPhone())
                 .verified(false)
                 .build();
+    }
+
+    // 잔액 변경
+    public void changeBalance(Long customerId, Integer balance){
+        this.id = customerId;
+        this.balance = balance;
+    }
+
+    // 인증키 세팅
+    public void verifiedInfo(Long id, String verificationCode, LocalDateTime verifyExpiredAt){
+
+        this.id = id;
+        this.verifyExpiredAt = verifyExpiredAt;
+        this.verificationCode = verificationCode;
+
+    }
+
+    // 인증 완료여부
+    public void verifiedYN(String email , boolean verified){
+       this.verified = verified;
+
+
     }
 
 

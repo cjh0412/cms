@@ -28,8 +28,6 @@ class SignUpCustomerServiceTest {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @Autowired
-    private SignUpApplication signUpApplication;
 
     // 이메일인증시 key 값 생성
     private String getRandomCode() {
@@ -93,22 +91,27 @@ class SignUpCustomerServiceTest {
                 .password("1")
                 .phone("01012341234")
                 .verificationCode(code)
-                .verified(true)
+                .verified(false)
                 .verifyExpiredAt(LocalDateTime.now().plusDays(1))
                 .build();
-        customerRepository.save(customer);
+
         //when
+        customerRepository.save(customer);
         service.verifyEmail(customer.getEmail(), customer.getVerificationCode());
 
+        customer.verifiedYN(customer.getEmail(), true);
+        customerRepository.save(customer);
+
         // then
+        assertTrue(customer.isVerified());
         assertTrue("trueEmail@gmail.com".equals(customer.getEmail()));
         assertTrue(customer.getVerificationCode().equals(code));
-        assertTrue(customer.isVerified());
     }
 
 
     @Test
     void verifyEmail_fail(){
+
         String code = getRandomCode();
         Customer customer = Customer.builder()
                 .name("name")
@@ -136,14 +139,52 @@ class SignUpCustomerServiceTest {
                 -> service.verifyEmail(customer.getEmail(), "123123123"));
         assertEquals(ErrorCode.WRONG_VERIFY, exception2.getErrorCode());
 
+    }
+
+
+    @Test
+    void verifyEmail_fail_expiredAt(){
+        String code = getRandomCode();
+        Customer customer = Customer.builder()
+                .name("name")
+                .birth(LocalDate.now())
+                .email("trueEmail@gmail.com")
+                .password("1")
+                .phone("01012341234")
+                .verificationCode(code)
+                .verified(false)
+                .verifyExpiredAt(LocalDateTime.now().minusDays(1))
+                .build();
+
+        //when
+        customerRepository.save(customer);
+
         // 만료된 인증키
-        customer.setVerifyExpiredAt(LocalDateTime.now().minusDays(1));
         CustomerException exception3 = Assertions.assertThrows(CustomerException.class,()
                 -> service.verifyEmail(customer.getEmail(), customer.getVerificationCode()));
         assertEquals(ErrorCode.EXPIRE_CODE, exception3.getErrorCode());
 
+    }
+
+
+    @Test
+    void verifyEmail_fail_verified(){
+        String code = getRandomCode();
+        Customer customer = Customer.builder()
+                .name("name")
+                .birth(LocalDate.now())
+                .email("trueEmail@gmail.com")
+                .password("1")
+                .phone("01012341234")
+                .verificationCode(code)
+                .verified(true)
+                .verifyExpiredAt(LocalDateTime.now().plusDays(1))
+                .build();
+
+        //when
+        customerRepository.save(customer);
+
         // 회원 정보 존재
-        customer.setVerified(true);
         CustomerException exception4 = Assertions.assertThrows(CustomerException.class,()
                 -> service.verifyEmail(customer.getEmail(), customer.getVerificationCode()));
         assertEquals(ErrorCode.ALREADY_VERIFY, exception4.getErrorCode());
