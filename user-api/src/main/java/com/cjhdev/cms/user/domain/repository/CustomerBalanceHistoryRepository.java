@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface CustomerBalanceHistoryRepository extends JpaRepository<CustomerBalanceHistory, Long> {
 
+    //  해당하는 customer_id 가장 최신 정보를 불러옴
     Optional<CustomerBalanceHistory> findFirstByCustomerId_IdOrderByIdDesc(@RequestParam("customer_id") Long customerId);
 }
 
