@@ -1,4 +1,4 @@
-package com.cjhdev.cms.user.client.service;
+package com.cjhdev.cms.user.service.customer;
 
 import com.cjhdev.cms.user.application.SignUpApplication;
 import com.cjhdev.cms.user.domain.SignUpForm;
@@ -6,7 +6,6 @@ import com.cjhdev.cms.user.domain.model.Customer;
 import com.cjhdev.cms.user.domain.repository.CustomerRepository;
 import com.cjhdev.cms.user.exception.CustomerException;
 import com.cjhdev.cms.user.exception.ErrorCode;
-import com.cjhdev.cms.user.service.customer.SignUpCustomerService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,6 +27,9 @@ class SignUpCustomerServiceTest {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private SignUpApplication signUpApplication;
 
     // 이메일인증시 key 값 생성
     private String getRandomCode() {
