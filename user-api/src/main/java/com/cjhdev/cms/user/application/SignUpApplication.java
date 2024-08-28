@@ -71,7 +71,7 @@ public class SignUpApplication {
                     .text(getVerificationEmailBody(form.getEmail(), form.getName(), "customer", code))
                     .build();
             mailgunClient.sendEmail(sendMailForm);
-            signUpCustomerService.ChangeCustomerValidateEmail(customer.getId(), code);
+            signUpCustomerService.changeCustomerValidateEmail(customer.getId(), code);
             return "회원가입에 성공하셨습니다.";
         }
     }

@@ -43,19 +43,27 @@ public class SignUpCustomerService {
         }else if(customer.getVerifyExpiredAt().isBefore(LocalDateTime.now())){
             throw new CustomerException(ErrorCode.EXPIRE_CODE);
         }
+//        setter 제거
+//        customer.setVerified(true);
 
-        customer.setVerified(true);
+        customer.verifiedYN(email, true);
+        customerRepository.save(customer);
     }
 
     // 회원정보(이메일)확인 후 인증키 만료일 세팅
     @Transactional
-    public LocalDateTime ChangeCustomerValidateEmail(Long customerId, String verificationCode){
+    public LocalDateTime changeCustomerValidateEmail(Long customerId, String verificationCode){
         Optional<Customer> customerOptional = customerRepository.findById(customerId);
 
         if (customerOptional.isPresent()) {
             Customer customer = customerOptional.get();
-            customer.setVerificationCode(verificationCode);
-            customer.setVerifyExpiredAt(LocalDateTime.now().plusDays(1)); // 인증키 만료일(now + 1일)
+            // setter 제거
+//            customer.setVerificationCode(verificationCode);
+//            customer.setVerifyExpiredAt(LocalDateTime.now().plusDays(1)); // 인증키 만료일(now + 1일)
+//
+            customer.verifiedInfo(customerId, verificationCode, LocalDateTime.now().plusDays(1));
+            customerRepository.save(customer);
+
             return customer.getVerifyExpiredAt();
         }
         throw new CustomerException(ErrorCode.NOT_FOUND_USER);

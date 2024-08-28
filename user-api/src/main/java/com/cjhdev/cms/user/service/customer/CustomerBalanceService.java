@@ -2,6 +2,7 @@ package com.cjhdev.cms.user.service.customer;
 
 import com.cjhdev.cms.user.domain.CustomerBalanceHistory;
 import com.cjhdev.cms.user.domain.customer.ChangeBalanceForm;
+import com.cjhdev.cms.user.domain.model.Customer;
 import com.cjhdev.cms.user.domain.repository.CustomerBalanceHistoryRepository;
 import com.cjhdev.cms.user.domain.repository.CustomerRepository;
 import com.cjhdev.cms.user.exception.CustomerException;
@@ -22,14 +23,19 @@ public class CustomerBalanceService {
     // noRollbackFor : {CustomerException.class}이 발생할 경우 롤백하지 x
     @Transactional(noRollbackFor = {CustomerException.class})
     public CustomerBalanceHistory changeBalance(Long customerId, ChangeBalanceForm form) throws CustomerException {
+
+
+        // 회원 정보 조회
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new CustomerException(ErrorCode.NOT_FOUND_USER));
+
         // 회원의 예치금 조회, 잔액이 없는 경우 0을 반환
         CustomerBalanceHistory customerBalanceHistory
                 = CustomerBalanceHistoryRepository.findFirstByCustomerId_IdOrderByIdDesc(customerId) // 가장 최신 잔액 값을 가져옴
                 .orElse(CustomerBalanceHistory.builder() // 값이 없을 경우
                         .changeMoney(0)
                         .currentMoney(0)
-                        .customer(customerRepository.findById(customerId)
-                        .orElseThrow(() -> new CustomerException(ErrorCode.NOT_FOUND_USER))) // 계정이 없는 경우
+                        .customer(customer) // 계정이 없는 경우
                         .build());
 
         // 현재 잔액 + 변경 금액
@@ -46,9 +52,13 @@ public class CustomerBalanceService {
                 .customer(customerBalanceHistory.getCustomer())
                 .build();
 
-        customerBalanceHistory.getCustomer().setBalance(customerBalanceHistory.getCurrentMoney());
-        customerBalanceHistoryRepository.save(customerBalanceHistory);
+        // setter 제거
+        // 고객 잔액 저장
+        //customerBalanceHistory.getCustomer().setBalance(customerBalanceHistory.getCurrentMoney());
+        customer.changeBalance(customerId,customerBalanceHistory.getCurrentMoney());
+        customerRepository.save(customer);
 
+        customerBalanceHistoryRepository.save(customerBalanceHistory);
         return customerBalanceHistory;
     }
 }
