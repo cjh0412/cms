@@ -19,23 +19,25 @@ public class CustomerBalanceService {
     private final CustomerBalanceHistoryRepository CustomerBalanceHistoryRepository;
     private final CustomerBalanceHistoryRepository customerBalanceHistoryRepository;
 
+    // noRollbackFor : {CustomerException.class}이 발생할 경우 롤백하지 x
     @Transactional(noRollbackFor = {CustomerException.class})
     public CustomerBalanceHistory changeBalance(Long customerId, ChangeBalanceForm form) throws CustomerException {
         // 회원의 예치금 조회, 잔액이 없는 경우 0을 반환
         CustomerBalanceHistory customerBalanceHistory
-                = CustomerBalanceHistoryRepository.findFirstByCustomerId_IdOrderByIdDesc(customerId)
-                .orElse(CustomerBalanceHistory.builder()
+                = CustomerBalanceHistoryRepository.findFirstByCustomerId_IdOrderByIdDesc(customerId) // 가장 최신 잔액 값을 가져옴
+                .orElse(CustomerBalanceHistory.builder() // 값이 없을 경우
                         .changeMoney(0)
                         .currentMoney(0)
                         .customer(customerRepository.findById(customerId)
-                        .orElseThrow(() -> new CustomerException(ErrorCode.NOT_FOUND_USER)))
+                        .orElseThrow(() -> new CustomerException(ErrorCode.NOT_FOUND_USER))) // 계정이 없는 경우
                         .build());
 
+        // 현재 잔액 + 변경 금액
         if(customerBalanceHistory.getCurrentMoney() + form.getMoney() < 0){
             throw new CustomerException(ErrorCode.NOT_ENOUGH_BALANCE);
         }
 
-        // 변경 잔액 저장
+        // 변경 정보(잔액) 저장
         customerBalanceHistory = CustomerBalanceHistory.builder()
                 .changeMoney(form.getMoney())
                 .currentMoney(customerBalanceHistory.getCurrentMoney()+ form.getMoney())
