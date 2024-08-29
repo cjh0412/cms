@@ -45,13 +45,12 @@ class CustomerServiceTest {
 
         //when
         customerRepository.save(customer);
-        Optional<Customer>  trueResult = customerRepository.findById(customer.getId())
-                .stream().filter(result -> result.getEmail().equals("trueEmail@gmail.com"))
-                .findFirst();
 
-        Optional<Customer>  falseResult = customerRepository.findById(customer.getId())
-                .stream().filter(result -> result.getEmail().equals("falseEmail@gmail.com"))
-                .findFirst();
+        Optional<Customer> trueResult =
+        customerService.findByIdAndEmail(customer.getId(), customer.getEmail());
+
+        Optional<Customer> falseResult =
+                customerService.findByIdAndEmail(customer.getId(), "falseEmail@gmail.com");
 
         //then
         assertTrue(trueResult.isPresent());
@@ -72,23 +71,19 @@ class CustomerServiceTest {
                 .verifyExpiredAt(LocalDateTime.now().plusDays(1))
                 .build();
 
-        //when
         customerRepository.save(customer);
-        Optional<Customer>  trueInfo = customerRepository.findByEmail("trueEmail@gmail.com").stream().filter(
-                        result -> result.getPassword().equals("1") && result.isVerified())
-                .findFirst();
 
-        Optional<Customer>  emailFalse = customerRepository.findByEmail("falseEmail@gmail.com").stream().filter(
-                        result -> result.getPassword().equals("1") && result.isVerified())
-                .findFirst();
+        //when
+        Optional<Customer>  trueInfo = customerService.findValidCustomer(customer.getEmail(), customer.getPassword());
+        Optional<Customer>  emailFalse = customerService.findValidCustomer("falseEmail@gmail.com", customer.getPassword());
+        Optional<Customer>  passwordFalse = customerService.findValidCustomer(customer.getEmail(), "1234");
+        Optional<Customer>  totalFalse  = customerService.findValidCustomer("falseEmail@gmail.com", "1234");
 
-        Optional<Customer>  passwordFalse = customerRepository.findByEmail("trueEmail@gmail.com").stream().filter(
-                        result -> result.getPassword().equals("1234") && result.isVerified())
-                .findFirst();
+        assertEquals(true, trueInfo.isPresent());
+        assertEquals(false, emailFalse.isPresent());
+        assertEquals(false, passwordFalse.isPresent());
+        assertEquals(false, totalFalse.isPresent());
 
-        Optional<Customer>  totalFalse = customerRepository.findByEmail("falseEmail@gmail.com").stream().filter(
-                        result -> result.getPassword().equals("1234") && result.isVerified())
-                .findFirst();
 
     }
 }

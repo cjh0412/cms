@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Audited
+@Audited // 엔티티 이력 관리(entity_aud 테이블 자동생성)
 @AuditOverride(forClass = BaseEntity.class)
 public class Product extends BaseEntity {
     @Id
@@ -30,7 +30,7 @@ public class Product extends BaseEntity {
 
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL) // 1:N 관계 설정
     @JoinColumn(name = "product_id")
     private List<ProductItem> productItems = new ArrayList<>();
 
