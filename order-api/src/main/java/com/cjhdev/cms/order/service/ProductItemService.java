@@ -25,10 +25,13 @@ public class ProductItemService {
     }
 
     @Transactional
+    // 상품에 대한 옵션만 추가
     public Product addProductItem(Long sellerId, AddProductItemForm form) {
+        // 상품 존재 여부 체크
         Product product = productRepository.findBySellerIdAndId(sellerId, form.getProductId())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
 
+        // 동일 옵션명 존재 여부 체크
         if(product.getProductItems().stream()
                 .anyMatch(item -> item.getName().equals(form.getName()))) {
             throw new CustomException(ErrorCode.SAME_ITEM_NAME);

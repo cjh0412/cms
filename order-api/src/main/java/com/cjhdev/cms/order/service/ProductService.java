@@ -18,6 +18,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     @Transactional
+    // 상품 추가
     public Product addProduct(Long sellerId, AddProductForm form){
         return productRepository.save(Product.of(sellerId, form));
     }
