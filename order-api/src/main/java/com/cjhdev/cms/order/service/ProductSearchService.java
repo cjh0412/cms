@@ -14,15 +14,18 @@ import java.util.List;
 public class ProductSearchService {
     private final ProductRepository productRepository;
 
+    // 상품검색
     public List<Product> searchByName(String name) {
         return productRepository.searchByName(name);
     }
 
+    // 상품조회
     public Product getByProductId(Long productId) {
         return productRepository.findWithProductItemsById(productId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
     }
 
+    //목록조회
     public List<Product> getListByProductIds(List<Long> productIds) {
         return productRepository.findAllByIdIn(productIds);
     }

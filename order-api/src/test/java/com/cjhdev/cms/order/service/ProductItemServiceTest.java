@@ -8,6 +8,9 @@ import com.cjhdev.cms.order.domain.product.UpdateProductForm;
 import com.cjhdev.cms.order.domain.product.UpdateProductItemForm;
 import com.cjhdev.cms.order.domain.repository.ProductItemRepository;
 import com.cjhdev.cms.order.domain.repository.ProductRepository;
+import com.cjhdev.cms.order.exception.CustomException;
+import com.cjhdev.cms.order.exception.ErrorCode;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,8 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -37,6 +39,20 @@ class ProductItemServiceTest {
     private ProductItemRepository productItemRepository;
 
     @Test
+    void getProductItem() {
+        Long sellerId = 1L;
+        AddProductForm form = makeAddProductForm("상품명" , "상품상세정보", 1);
+        productService.addProduct(sellerId, form);
+
+        ProductItem productItem = productItemService.getProductItem(1L);
+
+        assertNotNull(productItem);
+        assertEquals("상품명0", productItem.getName());
+        assertEquals(10000, productItem.getPrice());
+        assertTrue(productItem.getCount().equals(3));
+    }
+
+    @Test
     void addProductItem() {
         Long sellerId = 1L;
 
@@ -48,20 +64,22 @@ class ProductItemServiceTest {
 
         Product result = productRepository.findWithProductItemsById(product.getId()).get();
 
+
         assertNotNull(result);
         assertEquals(result.getProductItems().size(), 2);
         assertEquals(result.getProductItems().get(1).getName(), "아이템추가");
         assertEquals(result.getProductItems().get(0).getPrice(), 10000);
         assertEquals(result.getProductItems().get(0).getCount(), 3);
 
+        AddProductItemForm itemForm2 = makeProductItemForm(product.getId(), "아이템추가");
+        CustomException exception =Assertions.assertThrows(CustomException.class,()
+                -> productItemService.addProductItem(sellerId, itemForm2));
+
+        assertEquals(itemForm2.getName(), result.getProductItems().get(1).getName());
+        assertEquals(ErrorCode.SAME_ITEM_NAME, exception.getErrorCode());
+
     }
 
-
-    @Test
-    void getProductItem() {
-
-
-    }
 
     @Test
     void updateProductItem() {
@@ -87,14 +105,13 @@ class ProductItemServiceTest {
     @Test
     void deleteProductItem() {
 
-        Long sellerId = 1L;
+        Long sellerId = 2L;
 
         AddProductForm form = makeAddProductForm("상품명" , "상품상세정보", 5);
-        productService.addProduct(sellerId, form);
+        Product product = productService.addProduct(sellerId, form);
+        productItemService.deleteProductItem(sellerId, product.getProductItems().get(0).getId());
 
-        productItemService.deleteProductItem(sellerId, 1L);
-
-        assertEquals(productItemRepository.findById( 1L), Optional.empty());
+        assertEquals(Optional.empty(), productItemRepository.findById(0L));
         assertNotNull(productItemRepository.findById(2L));
     }
 
