@@ -47,10 +47,13 @@ public class ProductItemService {
         ProductItem productItem = productItemRepository.findById(form.getId())
                 .filter(piForm -> piForm.getSellerId().equals(sellerId))
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT_ITEM));
+        
+//        setter 제거
+//        productItem.setName(form.getName());
+//        productItem.setPrice(form.getPrice());
+//        productItem.setCount(form.getCount());
 
-        productItem.setName(form.getName());
-        productItem.setPrice(form.getPrice());
-        productItem.setCount(form.getCount());
+        productItem.updateItemProductInfo(form.getId(), form.getName(), form.getPrice(), form.getCount());
         return productItem;
     }
 

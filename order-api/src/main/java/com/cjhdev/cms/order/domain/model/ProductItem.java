@@ -7,12 +7,13 @@ import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.Audited;
 
 @Entity
-@Setter
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @AuditOverride(forClass = BaseEntity.class)
+
+//@Setter
 public class ProductItem extends BaseEntity {
 
     @Id
@@ -42,6 +43,14 @@ public class ProductItem extends BaseEntity {
                 .price(form.getPrice())
                 .count(form.getCount())
                 .build();
+    }
+
+    // 상품 옵션 정보 변경 (이름, 가격, 수량)
+    public void updateItemProductInfo(Long itemId, String name, Integer price, Integer count){
+        this.id = itemId;
+        this.name = name;
+        this.price = price;
+        this.count = count;
     }
 
 

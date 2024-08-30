@@ -28,8 +28,11 @@ public class ProductService {
         Product product = productRepository.findBySellerIdAndId(sellerId, form.getId())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
 
-        product.setName(form.getName());
-        product.setDescription(form.getDescription());
+        //Entity setter 제거
+//        product.setName(form.getName());
+//        product.setDescription(form.getDescription());
+        // 상품 정보 변경
+        product.updateProductInfo(form.getId(), form.getName(), form.getDescription());
 
         for (UpdateProductItemForm itemForm : form.getItems()){
             ProductItem item = product.getProductItems().stream()
@@ -37,9 +40,13 @@ public class ProductService {
                     .findFirst()
                     .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT_ITEM));
 
-            item.setName(itemForm.getName());
-            item.setPrice(itemForm.getPrice());
-            item.setCount(itemForm.getCount());
+            //            Entity setter 제거
+//            item.setName(itemForm.getName());
+//            item.setPrice(itemForm.getPrice());
+//            item.setCount(itemForm.getCount());
+
+            // 상품 옵션 정보 변경
+            item.updateItemProductInfo(itemForm.getId(), itemForm.getName(), itemForm.getPrice(), item.getCount());
         }
 
         return product;
