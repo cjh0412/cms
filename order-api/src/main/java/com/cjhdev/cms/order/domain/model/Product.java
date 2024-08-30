@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-@Setter
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Audited // 엔티티 이력 관리(entity_aud 테이블 자동생성)
 @AuditOverride(forClass = BaseEntity.class)
+//@Setter
 public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,5 +43,12 @@ public class Product extends BaseEntity {
                         .map(piFrom -> ProductItem.of(sellerId, piFrom)).collect(Collectors.toList()))
                 .build();
 
+    }
+
+    // 상품 정보 변경 (이름, 정보)
+    public void updateProductInfo(Long productId, String name, String description){
+        this.id = productId;
+        this.name = name;
+        this.description = description;
     }
 }
